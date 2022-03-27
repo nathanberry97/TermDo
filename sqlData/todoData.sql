@@ -7,8 +7,12 @@ VALUES
 
 INSERT INTO progress(
 VALUES
-(0, 'todo'),
-(1, 'in progress'),
-(2, 'done')
-)
+(0, 'Todo'),
+(1, 'In Progress'),
+(2, 'Done')
+);
 
+INSERT INTO project(
+VALUES
+(0, 'Default')
+)
