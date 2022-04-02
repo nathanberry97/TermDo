@@ -11,6 +11,7 @@ class TodoApp{
 		Scanner userInput = new Scanner(System.in);
 		
 		while (running){
+			ui.taskOutput();
 			String decision = ui.userOptions(userInput);
 
 			if(decision.equals("y")){
@@ -67,6 +68,10 @@ class TodoApp{
 	public boolean quitTodo(){
 		ui.clearScreen();
 		return(false);
+	}
+
+	public void taskOutput(){
+		System.out.println(db.getTask(conn));
 	}
 
 }
@@ -132,10 +137,39 @@ class Database{
 				maxid = rs.getInt(1);
 			}
 		}
-		catch (Exception e){
+		catch(SQLException e){
 			e.printStackTrace();
 		}
 
 		return(maxid + 1);
+	}
+
+	public ArrayList<ArrayList<String>> getTask(Connection conn){
+		String query = "SELECT project.project, task.task, progress.progress, priority.priority "
+					 + "FROM task "
+					 + "INNER JOIN project ON task.project_id = project.project_id "
+					 + "INNER JOIN priority ON task.priority_id = priority.priority_id "
+					 + "INNER JOIN progress ON task.progress_id = progress.progress_id;";
+					 // update needs to have WHERE task.project_id = project
+		ArrayList<ArrayList<String>> taskList = new ArrayList<ArrayList<String>>();
+
+		try{
+			PreparedStatement st = conn.prepareStatement(query);
+			ResultSet rs = st.executeQuery();
+			int columnCount = rs.getMetaData().getColumnCount();
+
+			while(rs.next()){
+				ArrayList<String> taskColumn = new ArrayList<String>();
+
+				for(int i = 1; i < columnCount; i++){
+					taskColumn.add(rs.getString(i));
+				}
+				taskList.add(taskColumn);
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();	
+		}
+		return(taskList);
 	}
 }
