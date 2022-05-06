@@ -8,25 +8,29 @@ class TodoApp{
 
     public static void main(String args[]){
 		boolean running = true;
+        ui.clearScreen();
 		Scanner userInput = new Scanner(System.in);
 		
 		while (running){
-			ui.taskOutput();
 			String decision = ui.userOptions(userInput);
 
-			if(decision.equals("y")){
-				ui.displayTodoList(userInput);
-			}
-			else{ 
-				if (decision.equals("i")){
-					ui.insertTodoList(userInput);
-				}
-				else{
-					if(decision.equals("n")){
-						running = ui.quitTodo();
-					}
-				}
-			}
+            switch(decision){
+                case "todo":
+                    ui.taskOutput();
+                    break;
+                case "projects":
+                    ui.displayTodoList(userInput);
+                    break;
+                case "new project":
+                    ui.insertTodoList(userInput);
+                    break;
+                case "clear":
+                    ui.clearScreen();
+                    break;
+                case "exit":
+                    running = ui.quitTodo();
+                    break;
+            }
 		}
 	}
 
@@ -45,21 +49,18 @@ class TodoApp{
 	}
 
 	public String userOptions(Scanner userInput){
-		ui.clearScreen();
-		System.out.println("Display todo lists? (y/n)");
-		System.out.println("Insert new todo list (i)");
+        System.out.print("todo$ ");
 		String option = userInput.nextLine();
 		return(option);
 	}
 
 	public void displayTodoList(Scanner userInput){
-		ui.clearScreen();
+        System.out.println();
 		ui.projectOutput();
-		userInput.nextLine();
+        System.out.println();
 	}
 
 	public void insertTodoList(Scanner userInput){
-		ui.clearScreen();
 		System.out.println("Please enter todo list name:");
 		String newProject = userInput.nextLine();
 		db.putProjects(conn, newProject);
@@ -71,9 +72,17 @@ class TodoApp{
 	}
 
 	public void taskOutput(){
-		System.out.println(db.getTask(conn));
+        // TODO need to format the todo list to have a better output on the display
+        ArrayList<ArrayList<String>> todoList = new ArrayList<ArrayList<String>>(db.getTask(conn));
+        System.out.println();
+        for(ArrayList<String> column : todoList){
+            for(String content : column){
+                System.out.print(content + " | ");
+            }
+            System.out.println();
+            System.out.println();
+        }
 	}
-
 }
 
 class Database{
