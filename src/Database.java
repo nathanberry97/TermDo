@@ -75,7 +75,7 @@ class Database{
 					 + "INNER JOIN project ON task.project_id = project.project_id "
 					 + "INNER JOIN priority ON task.priority_id = priority.priority_id "
 					 + "INNER JOIN progress ON task.progress_id = progress.progress_id;";
-					 // update needs to have WHERE task.project_id = project
+					 // TODO update needs to have WHERE task.project_id = project
 		ArrayList<ArrayList<String>> taskList = new ArrayList<ArrayList<String>>();
 
 		try{
