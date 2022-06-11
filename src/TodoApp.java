@@ -27,6 +27,9 @@ class TodoApp{
                 case "clear":
                     ui.clearScreen();
                     break;
+                case "help":
+                    ui.help();
+                    break;
                 case "exit":
                     running = ui.quitTodo();
                     break;
@@ -42,6 +45,15 @@ class TodoApp{
 			System.out.println(test);
 		}
 	}
+
+    public void help(){
+        System.out.println("todo         : retrieves todo list");
+        System.out.println("projects     : lists projects");
+        System.out.println("new projects : creates new project");
+        System.out.println("clear        : clears the content from the screen");
+        System.out.println("exit         : exits the application");
+        System.out.println();
+    }
 
 	public void clearScreen(){
 		System.out.println("\033[H\033[2J");
