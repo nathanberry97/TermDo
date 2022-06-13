@@ -10,19 +10,23 @@ class TodoApp{
 		boolean running = true;
         ui.clearScreen();
 		Scanner userInput = new Scanner(System.in);
-		
+        String project = "Default";
+
 		while (running){
-			String decision = ui.userOptions(userInput);
+			String decision = ui.userOptions(userInput, project);
 
             switch(decision){
-                case "todo":
+                case "ls":
                     ui.taskOutput();
                     break;
-                case "projects":
+                case "list":
                     ui.displayTodoList(userInput);
                     break;
-                case "new project":
+                case "mklist":
                     ui.insertTodoList(userInput);
+                    break;
+                case "chlist":
+                    project = ui.selectProject(userInput);
                     break;
                 case "clear":
                     ui.clearScreen();
@@ -47,12 +51,20 @@ class TodoApp{
 	}
 
     public void help(){
-        System.out.println("todo         : retrieves todo list");
-        System.out.println("projects     : lists projects");
-        System.out.println("new projects : creates new project");
-        System.out.println("clear        : clears the content from the screen");
-        System.out.println("exit         : exits the application");
+        System.out.println("ls     : retrieves todo list");
+        System.out.println("list   : lists projects");
+        System.out.println("mklist : creates new project");
+        System.out.println("chlist : change project");
+        System.out.println("clear  : clears the content from the screen");
+        System.out.println("exit   : exits the application");
         System.out.println();
+    }
+
+    public String selectProject(Scanner userInput){
+        System.out.println("Enter todo list to switch to:");
+		String project = userInput.nextLine();
+        System.out.println();
+        return(project);
     }
 
 	public void clearScreen(){
@@ -60,8 +72,8 @@ class TodoApp{
 		System.out.flush();
 	}
 
-	public String userOptions(Scanner userInput){
-        System.out.print("todo$ ");
+	public String userOptions(Scanner userInput, String project){
+        System.out.print(project + ": ");
 		String option = userInput.nextLine();
 		return(option);
 	}
@@ -73,7 +85,7 @@ class TodoApp{
 	}
 
 	public void insertTodoList(Scanner userInput){
-		System.out.println("Please enter todo list name:");
+		System.out.println("Enter new todo list:");
 		String newProject = userInput.nextLine();
 		db.putProjects(conn, newProject);
 	}
