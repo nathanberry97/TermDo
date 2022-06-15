@@ -69,13 +69,13 @@ class Database{
 		return(maxid + 1);
 	}
 
-	public ArrayList<ArrayList<String>> getTask(Connection conn){
+	public ArrayList<ArrayList<String>> getTask(Connection conn, String project){
 		String query = "SELECT project.project, task.task, progress.progress, priority.priority "
 					 + "FROM task "
 					 + "INNER JOIN project ON task.project_id = project.project_id "
 					 + "INNER JOIN priority ON task.priority_id = priority.priority_id "
-					 + "INNER JOIN progress ON task.progress_id = progress.progress_id;";
-					 // TODO update needs to have WHERE task.project_id = project
+					 + "INNER JOIN progress ON task.progress_id = progress.progress_id "
+                     + "WHERE project = '" + project + "';";
 		ArrayList<ArrayList<String>> taskList = new ArrayList<ArrayList<String>>();
 
 		try{

@@ -17,7 +17,7 @@ class TodoApp{
 
             switch(decision){
                 case "ls":
-                    ui.taskOutput();
+                    ui.taskOutput(project);
                     break;
                 case "list":
                     ui.displayTodoList(userInput);
@@ -43,11 +43,10 @@ class TodoApp{
 
 	public void projectOutput(){
 		ArrayList<String> results = new ArrayList<String>(db.getProjects(conn));		
-		System.out.println("TODO LISTS");
-		System.out.println();
 		for(String test : results){
 			System.out.println(test);
 		}
+        System.out.println();
 	}
 
     public void help(){
@@ -61,7 +60,7 @@ class TodoApp{
     }
 
     public String selectProject(Scanner userInput){
-        System.out.println("Enter todo list to switch to:");
+        System.out.print("Enter todo list to switch to: ");
 		String project = userInput.nextLine();
         System.out.println();
         return(project);
@@ -79,15 +78,14 @@ class TodoApp{
 	}
 
 	public void displayTodoList(Scanner userInput){
-        System.out.println();
 		ui.projectOutput();
-        System.out.println();
 	}
 
 	public void insertTodoList(Scanner userInput){
-		System.out.println("Enter new todo list:");
+		System.out.print("Enter new todo list: ");
 		String newProject = userInput.nextLine();
 		db.putProjects(conn, newProject);
+        System.out.println();
 	}
 	
 	public boolean quitTodo(){
@@ -95,16 +93,14 @@ class TodoApp{
 		return(false);
 	}
 
-	public void taskOutput(){
-        // TODO need to format the todo list to have a better output on the display
-        ArrayList<ArrayList<String>> todoList = new ArrayList<ArrayList<String>>(db.getTask(conn));
-        System.out.println();
+	public void taskOutput(String project){
+        ArrayList<ArrayList<String>> todoList = new ArrayList<ArrayList<String>>(db.getTask(conn, project));
         for(ArrayList<String> column : todoList){
             for(String content : column){
                 System.out.print(content + " | ");
             }
             System.out.println();
-            System.out.println();
         }
+        System.out.println();
 	}
 }
