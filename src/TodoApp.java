@@ -36,7 +36,11 @@ class TodoApp{
                     ui.insertTodoList(userInput);
                     System.out.println();
                     break;
-                case "done":
+                case "rmtask":
+                    System.out.println();
+                    db.resetTasks(conn);
+                    break;
+                case "mvtask":
                     System.out.println();
                     ui.updateTask(userInput);
                     System.out.println();
@@ -71,12 +75,13 @@ class TodoApp{
 	}
 
     public void help(){
-        System.out.println("ls     : retrieves todo list");
-        System.out.println("ls -p  : lists projects");
+        System.out.println("ls     : retrieves todo list tasks");
         System.out.println("mktask : creates new task");
-        System.out.println("mklist : creates new project");
-        System.out.println("done   : move task to done");
+        System.out.println("rmtask : deletes all tasks");
+        System.out.println("mvtask : move task to done");
+        System.out.println("ls -p  : lists projects");
         System.out.println("chlist : change project");
+        System.out.println("mklist : creates new project");
         System.out.println("clear  : clears the content from the screen");
         System.out.println("exit   : exits the application");
     }

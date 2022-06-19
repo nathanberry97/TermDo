@@ -161,4 +161,15 @@ class Database{
             e.printStackTrace();
         };
     }
+
+    public void resetTasks(Connection conn){
+        String query = "DELETE FROM task;";
+        try{
+            PreparedStatement st = conn.prepareStatement(query);
+			st.executeUpdate();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        };
+    }
 }
