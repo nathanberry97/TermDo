@@ -70,12 +70,11 @@ class Database{
 	}
 
 	public ArrayList<ArrayList<String>> getTask(Connection conn, String project){
-		String query = "SELECT project.project, task.task, progress.progress, priority.priority "
+        		String query = "SELECT task.task_id, project.project, task.task, progress.progress "
 					 + "FROM task "
 					 + "INNER JOIN project ON task.project_id = project.project_id "
-					 + "INNER JOIN priority ON task.priority_id = priority.priority_id "
 					 + "INNER JOIN progress ON task.progress_id = progress.progress_id "
-                     + "WHERE project = '" + project + "';";
+                     + "WHERE project = '" + project + "' and task.progress_id = 0;";
 		ArrayList<ArrayList<String>> taskList = new ArrayList<ArrayList<String>>();
 
 		try{
@@ -97,4 +96,69 @@ class Database{
 		}
 		return(taskList);
 	}
+
+    public void putTasks(Connection conn, String task, String project){
+		String query = "INSERT INTO task(VALUES(?, ?, ?, 0));";	
+        int taskId = getTaskId(conn);
+        int projectId = getProjectNameId(conn, project);
+
+        try{
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setInt(1, taskId);
+            st.setString(2, task);
+            st.setInt(3, projectId);
+			st.executeUpdate();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        };
+    }
+
+	private int getTaskId(Connection conn) {
+		String query = "SELECT MAX(task_id) FROM task";
+		int maxid = -1;
+
+		try{
+			PreparedStatement st = conn.prepareStatement(query);
+			ResultSet rs = st.executeQuery();
+			while(rs.next()){
+				maxid = rs.getInt(1);
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+
+		return(maxid + 1);
+	}
+
+	private int getProjectNameId(Connection conn, String name) {
+		String query = "SELECT project_id FROM project WHERE project = '" + name + "';";
+		int id = -1;
+
+		try{
+			PreparedStatement st = conn.prepareStatement(query);
+			ResultSet rs = st.executeQuery();
+			while(rs.next()){
+				id = rs.getInt(1);
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+
+		return(id);
+	}
+
+    public void completedTask(Connection conn, String taskId){
+        String query = "UPDATE task SET progress_id = 1 WHERE task_id = " + taskId + ";";
+
+        try{
+            PreparedStatement st = conn.prepareStatement(query);
+			st.executeUpdate();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        };
+    }
 }

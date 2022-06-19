@@ -17,22 +17,44 @@ class TodoApp{
 
             switch(decision){
                 case "ls":
+                    System.out.println();
                     ui.taskOutput(project);
+                    System.out.println();
                     break;
-                case "list":
+                case "mktask":
+                    System.out.println();
+                    ui.insertTask(userInput, project);
+                    System.out.println();
+                    break;
+                case "ls -p":
+                    System.out.println();
                     ui.displayTodoList(userInput);
+                    System.out.println();
                     break;
                 case "mklist":
+                    System.out.println();
                     ui.insertTodoList(userInput);
+                    System.out.println();
+                    break;
+                case "done":
+                    System.out.println();
+                    ui.updateTask(userInput);
+                    System.out.println();
                     break;
                 case "chlist":
+                    System.out.println();
                     project = ui.selectProject(userInput);
+                    System.out.println();
                     break;
                 case "clear":
+                    System.out.println();
                     ui.clearScreen();
+                    System.out.println();
                     break;
                 case "help":
+                    System.out.println();
                     ui.help();
+                    System.out.println();
                     break;
                 case "exit":
                     running = ui.quitTodo();
@@ -43,26 +65,25 @@ class TodoApp{
 
 	public void projectOutput(){
 		ArrayList<String> results = new ArrayList<String>(db.getProjects(conn));		
-		for(String test : results){
-			System.out.println(test);
+		for(String projects : results){
+			System.out.println(projects);
 		}
-        System.out.println();
 	}
 
     public void help(){
         System.out.println("ls     : retrieves todo list");
-        System.out.println("list   : lists projects");
+        System.out.println("ls -p  : lists projects");
+        System.out.println("mktask : creates new task");
         System.out.println("mklist : creates new project");
+        System.out.println("done   : move task to done");
         System.out.println("chlist : change project");
         System.out.println("clear  : clears the content from the screen");
         System.out.println("exit   : exits the application");
-        System.out.println();
     }
 
     public String selectProject(Scanner userInput){
-        System.out.print("Enter todo list to switch to: ");
+        System.out.println("Enter todo list to switch to: ");
 		String project = userInput.nextLine();
-        System.out.println();
         return(project);
     }
 
@@ -82,10 +103,15 @@ class TodoApp{
 	}
 
 	public void insertTodoList(Scanner userInput){
-		System.out.print("Enter new todo list: ");
+		System.out.println("Enter new todo list:");
 		String newProject = userInput.nextLine();
 		db.putProjects(conn, newProject);
-        System.out.println();
+	}
+
+	public void insertTask(Scanner userInput, String project){
+		System.out.println("Enter new task:");
+		String newTask = userInput.nextLine();
+		db.putTasks(conn, newTask, project);
 	}
 	
 	public boolean quitTodo(){
@@ -96,11 +122,21 @@ class TodoApp{
 	public void taskOutput(String project){
         ArrayList<ArrayList<String>> todoList = new ArrayList<ArrayList<String>>(db.getTask(conn, project));
         for(ArrayList<String> column : todoList){
+            int index = 0;
             for(String content : column){
-                System.out.print(content + " | ");
+                System.out.print(content);
+                if (index != 2){ 
+                    System.out.print(" | ");
+                    index += 1;
+                }
             }
             System.out.println();
         }
-        System.out.println();
+	}
+
+	public void updateTask(Scanner userInput){
+		System.out.println("Enter task id:");
+		String taskId = userInput.nextLine();
+		db.completedTask(conn, taskId);
 	}
 }
