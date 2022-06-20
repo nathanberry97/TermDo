@@ -18,7 +18,8 @@ class Database{
 	}
 
 	public ArrayList<String> getProjects(Connection conn){
-		String query = "SELECT project FROM project";
+		String query = "SELECT project "
+                     + "FROM project;";
 		ArrayList<String> projectList = new ArrayList<String>();
 
 		try{
@@ -52,7 +53,8 @@ class Database{
 	}
 	
 	private int getProjectId(Connection conn) {
-		String query = "SELECT MAX(project_id) FROM project";
+		String query = "SELECT MAX(project_id) "
+                     + "FROM project";
 		int maxid = -1;
 
 		try{
@@ -61,8 +63,7 @@ class Database{
 			while(rs.next()){
 				maxid = rs.getInt(1);
 			}
-		}
-		catch(SQLException e){
+		} catch(SQLException e){
 			e.printStackTrace();
 		}
 
@@ -70,11 +71,12 @@ class Database{
 	}
 
 	public ArrayList<ArrayList<String>> getTask(Connection conn, String project){
-        		String query = "SELECT task.task_id, project.project, task.task, progress.progress "
+        String query = "SELECT task.task_id, project.project, task.task, progress.progress "
 					 + "FROM task "
 					 + "INNER JOIN project ON task.project_id = project.project_id "
 					 + "INNER JOIN progress ON task.progress_id = progress.progress_id "
                      + "WHERE project = '" + project + "' and task.progress_id = 0;";
+
 		ArrayList<ArrayList<String>> taskList = new ArrayList<ArrayList<String>>();
 
 		try{
@@ -94,6 +96,7 @@ class Database{
 		catch(SQLException e){
 			e.printStackTrace();	
 		}
+
 		return(taskList);
 	}
 
@@ -133,7 +136,9 @@ class Database{
 	}
 
 	private int getProjectNameId(Connection conn, String name) {
-		String query = "SELECT project_id FROM project WHERE project = '" + name + "';";
+		String query = "SELECT project_id "
+                     + "FROM project "
+                     + "WHERE project = '" + name + "';";
 		int id = -1;
 
 		try{
@@ -151,7 +156,9 @@ class Database{
 	}
 
     public void completedTask(Connection conn, String taskId){
-        String query = "UPDATE task SET progress_id = 1 WHERE task_id = " + taskId + ";";
+        String query = "UPDATE task "
+                     + "SET progress_id = 1 "
+                     + "WHERE task_id = " + taskId + ";";
 
         try{
             PreparedStatement st = conn.prepareStatement(query);

@@ -1,5 +1,4 @@
 .DS_Store
-Build/*
-Jars/*
-start.sh
-todo.txt
+Build/Database.class
+Build/TodoApp.class
+complie.sh
