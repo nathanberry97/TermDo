@@ -4,7 +4,10 @@ TermDo is intended to be a simple yet effective way to help increase
 productivity
 
 This project is a simple todo list application within the terminal, the UI design
-for TermDo came from my time using PSQL within the terminal.
+for TermDo came from my time using PSQL within the terminal
+
+The main feature of TermDo will be the ability separate different projects into
+different todo lists
 
 ## preview
 
@@ -32,8 +35,3 @@ The following command is to run TermDo
 ```console
 java -cp ./build:./jars/postgresql-42.2.20.jar TodoApp
 ```
-
-## features
-
-The main feature of TermDo will be the ability separate different projects into
-different todo lists 
